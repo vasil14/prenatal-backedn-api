@@ -2,24 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return response()->json("Products Index");
+
+        return Product::all();
     }
 
-    public function store(Request $request)
+    public function show(Product $product)
     {
-        $formFields = $request->validate([
-            'name' => 'required',
-            'color' => 'required'
-        ]);
+        return $product;
+    }
 
-        Product::create($formFields);
-        return response()->json('Product Created');
+    public function store(StoreProductRequest $request)
+    {
+
+        Product::create($request->validated());
+        return response()->json('Product Created!');
+    }
+
+    public function update(StoreProductRequest $request, Product $product)
+    {
+
+        $product->update($request->validated());
+        return response()->json('Product Updated!');
+    }
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+        return response()->json('Product Deleted!');
     }
 }
