@@ -14,7 +14,11 @@ class ProductController extends Controller
         // return Product::all()->take(12);
         // return Product::where('id', '21292')->whereHas('categories')->with('categories')->get();
 
-        $categories = Category::where('name', 'MAMMA')->whereHas('products')->with('products')->get();
+        $categories = Category::where('name', 'Completi')->whereHas('products')->with([
+            'products' => function ($q) {
+                $q->where('id', 'like',);
+            }
+        ])->with('products')->get();
 
         foreach ($categories as $category) {
             return $category->products;
