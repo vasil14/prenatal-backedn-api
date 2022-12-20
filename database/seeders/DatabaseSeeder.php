@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
         $products = $xml->channel->item;
 
         foreach ($products as $k => $v) {
-            Product::create([
+
+            $product = Product::create([
                 'id' => $v->id,
                 'mpn' => (int)$v->mpn,
                 'price' => (float)$v->price,
@@ -50,22 +51,13 @@ class DatabaseSeeder extends Seeder
             $categories = $v->categories;
             foreach ($categories as $category) {
                 foreach ($category as $k1 => $v1) {
-                    // foreach ($v1 as $k2 => $v2) {
-                    //     Product_Category::create([
-                    //         'user_id' => $v->id,
-                    //         'category_id' => $a->id
-                    //     ]);
+                    foreach ($v1 as $k2 => $v2) {
+                        $category = Category::updateOrCreate([
+                            'id' => $v2->id,
+                            'name' => $v2->name
+                        ]);
 
-                        // $categoryExicsts = Category::where('id', '=', $a->id)->first();
-                        // if ($categoryExicsts === null) {
-                        //     Category::create([
-                        //         'id' => $a->id,
-                        //         'name' => $a->name
-                        //     ]);
-                        // }
-
-
-                        
+                        $product->categories()->attach($category->id);
                     }
                 }
             }

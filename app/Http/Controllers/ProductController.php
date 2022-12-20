@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -10,7 +11,28 @@ class ProductController extends Controller
     public function index()
     {
 
-        return Product::all();
+        // return Product::all()->take(12);
+        // return Product::where('id', '21292')->whereHas('categories')->with('categories')->get();
+
+        $categories = Category::where('name', 'MAMMA')->whereHas('products')->with('products')->get();
+
+        foreach ($categories as $category) {
+            return $category->products;
+        }
+        // return $categories;
+
+        // return Product::whereHas('categories')
+        //     ->with([
+        //         'categories' => function ($query) {
+        //             $query->where('name', 'like', 'MAMMA');
+        //         }
+        //     ])->get();
+
+
+        // return Category::where('name', 'MAMMA')->get();
+
+        // return Product::has('categorys', '=', "MAMMA");
+
     }
 
     public function show(Product $product)
