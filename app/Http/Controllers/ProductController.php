@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProductRequest;
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -12,31 +13,13 @@ class ProductController extends Controller
     {
 
         // return Product::all()->take(12);
-        // return Product::where('id', '21292')->whereHas('categories')->with('categories')->get();
+        $products = Product::whereRaw('id = parent_id')
+            ->whereHas('categories', function ($q) {
+                $q->where('name', '=', 'Pigiami e camicie notte');
+            })
+            ->get();
 
-        $categories = Category::where('name', 'Completi')->whereHas('products')->with([
-            'products' => function ($q) {
-                $q->where('id', 'like',);
-            }
-        ])->with('products')->get();
-
-        foreach ($categories as $category) {
-            return $category->products;
-        }
-        // return $categories;
-
-        // return Product::whereHas('categories')
-        //     ->with([
-        //         'categories' => function ($query) {
-        //             $query->where('name', 'like', 'MAMMA');
-        //         }
-        //     ])->get();
-
-
-        // return Category::where('name', 'MAMMA')->get();
-
-        // return Product::has('categorys', '=', "MAMMA");
-
+        return $products;
     }
 
     public function show(Product $product)
