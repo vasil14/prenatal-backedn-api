@@ -15,7 +15,9 @@ class ProductController extends Controller
         // return Product::all()->take(12);
         $products = Product::whereRaw('id = parent_id')
             ->whereHas('categories', function ($q) {
-                $q->where('name', '=', 'Pigiami e camicie notte');
+                $q->where([
+                    ['name', '=', 'MAMMA'],
+                ]);
             })
             ->get();
 

@@ -6,15 +6,14 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Category extends Model
+class Gallery extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['_id', 'name', 'parent_id'];
-
+    protected $fillable = ['link', 'product_id'];
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_category')->withTimestamps();
+        return $this->belongsTo(Product::class);
     }
 }
