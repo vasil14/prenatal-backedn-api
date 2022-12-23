@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
@@ -18,14 +16,15 @@ class ProductController extends Controller
                 $q->where([
                     ['name', '=', 'MAMMA'],
                 ]);
-            })
+            })->with('images')
             ->get();
 
         return $products;
     }
 
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = Product::where('id', $id)->with('images')->get();
         return $product;
     }
 
