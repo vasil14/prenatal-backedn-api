@@ -3,23 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
+
 use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
+
+    public function category($name){
+        $products = Product::whereRaw('id = parent_id')
+        ->whereHas('categories', function ($q) use ($name){
+            $q->where('name', 'like', $name);
+        })->with('images')->take(12)
+        ->get();
+
+    return $products;
+    }
     public function index()
     {
 
-        // return Product::all()->take(12);
-        $products = Product::whereRaw('id = parent_id')
-            ->whereHas('categories', function ($q) {
-                $q->where([
-                    ['name', '=', 'MAMMA'],
-                ]);
-            })->with('images')
-            ->get();
-
-        return $products;
+        return Product::all()->take(12);
+      
     }
 
     public function show($id)
