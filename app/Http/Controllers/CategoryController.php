@@ -10,22 +10,29 @@ class CategoryController extends Controller
     //
 
 
-    public function index(){
+    public function index()
+    {
         return Category::all();
     }
 
-    public function show($name){
+    public function show($name)
+    {
         $category = Category::where('name', $name)
-        ->whereHas('products', function ($q){
-            $q->whereRaw("'products'.'id' = 'products'.'parent_id'");
-        })->with('products')
-        ->get();
+            ->whereHas('products', function ($q) {
+                $q->whereRaw("'products'.'id' = 'products'.'parent_id'");
+            })->with('products')
+            ->get();
 
         return $category;
-
-
-
-        
     }
-    
+
+
+    public function getCategories()
+    {
+        $categories = Category::with('children')
+            ->whereNull('parent_id')
+            ->get();
+
+        return response()->json($categories);
+    }
 }

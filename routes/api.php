@@ -13,4 +13,9 @@ Route::group(['prefix' => 'v1'], function () {
 
 
 Route::get('/v1/products/categoria-prodotto/{name}', [ProductController::class, 'category']);
-Route::get('/category',[CategoryController::class, 'index']);
+Route::get('/v1/products/filter', [ProductController::class, 'filter']);
+
+
+
+Route::get('/category', [CategoryController::class, 'index']);
+Route::get('/categories', [CategoryController::class, 'getCategories']);

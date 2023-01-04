@@ -10,20 +10,27 @@ use App\Http\Requests\StoreProductRequest;
 class ProductController extends Controller
 {
 
-    public function category($name){
-        $products = Product::whereRaw('id = parent_id')
-        ->whereHas('categories', function ($q) use ($name){
-            $q->where('name', 'like', $name);
-        })->with('images')->take(12)
-        ->get();
+    public function filter()
+    {
+        $products =  Product::whereRaw('id = parent_id')->filterBy(request()->all())->paginate(20);
+        return $products;
+    }
 
-    return $products;
+
+    public function category($name)
+    {
+        $products = Product::whereRaw('id = parent_id')
+            ->whereHas('categories', function ($q) use ($name) {
+                $q->where('name', 'like', '%' . $name . '%');
+            })->with('images')->take(12)
+            ->get();
+
+        return $products;
     }
     public function index()
     {
 
         return Product::all()->take(12);
-      
     }
 
     public function show($id)
