@@ -23,6 +23,6 @@ Route::get('/categories', [CategoryController::class, 'getCategories']);
 
 
 // User routes
-Route::post('/user', [UserController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);

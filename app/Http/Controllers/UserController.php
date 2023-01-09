@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 
 class UserController extends Controller
@@ -16,7 +17,12 @@ class UserController extends Controller
         $formFields = $request->validate([
             'name' => ['required', 'min:3'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
-            'password' => ['required', 'min:6']
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->letters()
+                    ->symbols()
+            ]
         ]);
 
         // Hash Password
@@ -31,7 +37,7 @@ class UserController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return response(compact('user', 'token'));
     }
 
     public function login(Request $request)
@@ -63,7 +69,9 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+        $user = $request->user();
+
+        $user->currentAccessToken()->delete();
 
         return [
             'message' => 'Logged out!'
