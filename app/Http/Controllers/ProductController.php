@@ -20,6 +20,7 @@ class ProductController extends Controller
     public function category($name)
     {
         $products = Product::whereRaw('id = parent_id')
+            ->filterBy(request()->all())
             ->whereHas('categories', function ($q) use ($name) {
                 $q->where('name', 'like', '%' . $name . '%');
             })->with('images')->take(12)

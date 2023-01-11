@@ -19,7 +19,7 @@ Route::get('/v1/products/filter', [ProductController::class, 'filter']);
 
 // Category routes
 Route::get('/category', [CategoryController::class, 'index']);
-Route::get('/categories', [CategoryController::class, 'getCategories']);
+Route::get('/categories/{name}', [CategoryController::class, 'getCategories']);
 
 
 // User routes

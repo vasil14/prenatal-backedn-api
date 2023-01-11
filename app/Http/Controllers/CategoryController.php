@@ -27,9 +27,10 @@ class CategoryController extends Controller
     }
 
 
-    public function getCategories()
+    public function getCategories($name)
     {
-        $categories = Category::with('children')
+        $categories = Category::where('name', $name)
+            ->with('children')
             ->whereNull('parent_id')
             ->get();
 
