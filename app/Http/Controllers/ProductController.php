@@ -23,8 +23,7 @@ class ProductController extends Controller
             ->filterBy(request()->all())
             ->whereHas('categories', function ($q) use ($name) {
                 $q->where('name', 'like', '%' . $name . '%');
-            })->with('images')->take(12)
-            ->get();
+            })->with('images')->paginate(12);
 
         return $products;
     }
