@@ -30,7 +30,7 @@ class ProductController extends Controller
     public function index()
     {
 
-        return Product::all()->take(12);
+        return Product::whereRaw('id = parent_id')->filterBy(request()->all())->take(10)->get();
     }
 
     public function show($id)
