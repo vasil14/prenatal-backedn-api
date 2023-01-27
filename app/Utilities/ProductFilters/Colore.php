@@ -15,7 +15,15 @@ class Colore implements FilterContract
 
     public function handle($value): void
     {
-        $this->query
-            ->where('colore',  $value);
+        $colors = explode(',', $value);
+
+        if (count($colors) === 1) {
+            $this->query
+                ->where('colore',  $colors[0]);
+        } else {
+
+            $this->query
+                ->orWhere('colore', ...$colors);
+        }
     }
 }

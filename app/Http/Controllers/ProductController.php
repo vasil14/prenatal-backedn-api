@@ -27,6 +27,20 @@ class ProductController extends Controller
 
         return $products;
     }
+
+    public function subCategory($catName, $subCat)
+    {
+        $products = Product::whereRaw('id = parent_id')
+            ->filterBy(request()->all())
+            ->whereHas('categories', function ($q) use ($catName) {
+                $q->where('name', 'like', '%' . $catName . '%');
+            })->whereHas('categories', function ($q) use ($subCat) {
+                $q->where('name', 'like', '%' . $subCat . '%');
+            })
+            ->with('images')->paginate(12);
+
+        return $products;
+    }
     public function index()
     {
 
