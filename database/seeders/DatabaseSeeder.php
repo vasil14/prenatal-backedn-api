@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
                 'stock' => (int)$v->stock,
                 'availability' => $v->availability,
                 'taglia' => $v->taglia,
-                'parent_id' => (int)$v->parent_id,
+                'parent_id' => ($v->price == 0) ? 0 : $v->parent_id,
                 'title' => $v->title,
                 'description' => $v->description,
                 'link' => $v->link,

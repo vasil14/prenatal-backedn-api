@@ -17,13 +17,15 @@ class Colore implements FilterContract
     {
         $colors = explode(',', $value);
 
+
+
         if (count($colors) === 1) {
             $this->query
                 ->where('colore',  $colors[0]);
         } else {
 
             $this->query
-                ->orWhere('colore', ...$colors);
+                ->orWhere(['colore', $colors[0]], ['colore', $colors[1]]);
         }
     }
 }

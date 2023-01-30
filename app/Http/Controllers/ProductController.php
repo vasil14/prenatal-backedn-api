@@ -19,23 +19,23 @@ class ProductController extends Controller
 
     public function category($name)
     {
-        $products = Product::whereRaw('id = parent_id')
+        $products = Product::whereRaw('parent_id = 0')
             ->filterBy(request()->all())
             ->whereHas('categories', function ($q) use ($name) {
                 $q->where('name', 'like', '%' . $name . '%');
-            })->with('images')->paginate(12);
+            })->with('children')->with('images')->paginate(12);
 
         return $products;
     }
 
     public function subCategory($catName, $subCat)
     {
-        $products = Product::whereRaw('id = parent_id')
+        $products = Product::whereRaw('parent_id = 0')
             ->filterBy(request()->all())
             ->whereHas('categories', function ($q) use ($catName) {
-                $q->where('name', 'like', '%' . $catName . '%');
+                $q->where('name', 'like', $catName);
             })->whereHas('categories', function ($q) use ($subCat) {
-                $q->where('name', 'like', '%' . $subCat . '%');
+                $q->where('name', 'like', $subCat);
             })
             ->with('images')->paginate(12);
 
@@ -44,12 +44,13 @@ class ProductController extends Controller
     public function index()
     {
 
-        return Product::whereRaw('id = parent_id')->filterBy(request()->all())->take(10)->get();
+        return Product::whereRaw('parent_id = 0')->filterBy(request()->all())->take(10)->get();
     }
 
     public function show($id)
     {
-        $product = Product::where('id', $id)->with('images')->get();
+        $name = str_replace('-', ' ', $id);
+        $product = Product::where('title', $name)->with('images')->get();
         return $product;
     }
 

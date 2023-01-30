@@ -33,4 +33,9 @@ class Product extends Model
 
         return $filter->apply();
     }
+
+    public function children()
+    {
+        return $this->hasMany(Product::class, 'parent_id', 'id')->with('children');
+    }
 }
