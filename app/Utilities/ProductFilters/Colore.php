@@ -25,7 +25,8 @@ class Colore implements FilterContract
         } else {
 
             $this->query
-                ->orWhere(['colore', $colors[0]], ['colore', $colors[1]]);
+                ->where('colore', $colors[0])
+                ->orWhere('colore', $colors[1]);
         }
     }
 }

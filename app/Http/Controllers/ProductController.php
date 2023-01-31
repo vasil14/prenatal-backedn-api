@@ -22,7 +22,7 @@ class ProductController extends Controller
         $products = Product::whereRaw('parent_id = 0')
             ->filterBy(request()->all())
             ->whereHas('categories', function ($q) use ($name) {
-                $q->where('name', 'like', '%' . $name . '%');
+                $q->where('name', 'like', $name);
             })->with('children')->with('images')->paginate(12);
 
         return $products;
@@ -32,9 +32,7 @@ class ProductController extends Controller
     {
         $products = Product::whereRaw('parent_id = 0')
             ->filterBy(request()->all())
-            ->whereHas('categories', function ($q) use ($catName) {
-                $q->where('name', 'like', $catName);
-            })->whereHas('categories', function ($q) use ($subCat) {
+            ->whereHas('categories', function ($q) use ($subCat) {
                 $q->where('name', 'like', $subCat);
             })
             ->with('images')->paginate(12);
@@ -49,8 +47,8 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $name = str_replace('-', ' ', $id);
-        $product = Product::where('title', $name)->with('images')->get();
+
+        $product = Product::where('id', $id)->with('images')->get();
         return $product;
     }
 

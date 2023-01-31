@@ -14,7 +14,6 @@ Route::group(['prefix' => 'v1'], function () {
 
 
 Route::get('/v1/products/categoria-prodotto/{name}', [ProductController::class, 'category']);
-Route::get('/v1/products/categoria-prodotto/{catName}/{subCat}', [ProductController::class, 'subCategory']);
 Route::get('/v1/products/filter', [ProductController::class, 'filter']);
 
 
