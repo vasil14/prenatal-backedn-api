@@ -48,7 +48,7 @@ class ProductController extends Controller
     public function show($id)
     {
 
-        $product = Product::where('id', $id)->with('images')->get();
+        $product = Product::where('id', $id)->with('children')->with('images')->get();
         return $product;
     }
 
