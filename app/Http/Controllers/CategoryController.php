@@ -17,11 +17,10 @@ class CategoryController extends Controller
 
     public function show($name)
     {
-        $category = Category::where('name', $name)
+        $category = Category::where('name',  $name)
             ->whereHas('products', function ($q) {
-                $q->whereRaw("'products'.'id' = 'products'.'parent_id'");
-            })->with('products')
-            ->get();
+                $q->where('parent_id',  0);
+            })->get();
 
         return $category;
     }
@@ -29,7 +28,7 @@ class CategoryController extends Controller
 
     public function getCategories($name)
     {
-        $categories = Category::where('name', $name)
+        $categories = Category::where('name', 'like', $name)
             ->with('children')
             ->whereNull('parent_id')
             ->get();

@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
                         }
 
 
-                        $product->categories()->attach($category->id);
+                        $product->categories()->attach($category);
                     }
                 }
             }

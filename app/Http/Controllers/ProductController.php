@@ -12,18 +12,20 @@ class ProductController extends Controller
 
     public function filter()
     {
-        $products =  Product::whereRaw('id = parent_id')->filterBy(request()->all())->paginate(20);
+        $products =  Product::whereRaw('parent_id=0')->filterBy(request()->all())->with('children')->with()->paginate(20);
         return $products;
     }
 
 
     public function category($name)
     {
-        $products = Product::whereRaw('parent_id = 0')
-            ->filterBy(request()->all())
+        $products = Product::where('parent_id', 0)
             ->whereHas('categories', function ($q) use ($name) {
                 $q->where('name', 'like', $name);
-            })->with('children')->with('images')->paginate(12);
+            })->filterBy(request()->all())
+            ->with('children')
+            ->with('images')
+            ->paginate(12);
 
         return $products;
     }
