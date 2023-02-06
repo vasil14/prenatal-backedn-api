@@ -27,6 +27,11 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $k => $v) {
 
+            $p_id = 0;
+            if ((int)$v->id != (int)$v->parent_id) {
+                $p_id = $v->parent_id;
+            }
+
             $product = Product::create([
                 'id' => $v->id,
                 'mpn' => (int)$v->mpn,
@@ -36,7 +41,7 @@ class DatabaseSeeder extends Seeder
                 'stock' => (int)$v->stock,
                 'availability' => $v->availability,
                 'taglia' => $v->taglia,
-                'parent_id' => ($v->price == 0) ? 0 : $v->parent_id,
+                'parent_id' => $p_id,
                 'title' => $v->title,
                 'description' => $v->description,
                 'link' => $v->link,

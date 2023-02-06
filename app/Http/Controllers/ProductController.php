@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
@@ -21,7 +22,7 @@ class ProductController extends Controller
     {
         $products = Product::where('parent_id', 0)
             ->whereHas('categories', function ($q) use ($name) {
-                $q->where('name', 'like', $name);
+                $q->where('name', '=', $name);
             })->filterBy(request()->all())
             ->with('children')
             ->with('images')
@@ -30,21 +31,11 @@ class ProductController extends Controller
         return $products;
     }
 
-    public function subCategory($catName, $subCat)
-    {
-        $products = Product::whereRaw('parent_id = 0')
-            ->filterBy(request()->all())
-            ->whereHas('categories', function ($q) use ($subCat) {
-                $q->where('name', 'like', $subCat);
-            })
-            ->with('images')->paginate(12);
 
-        return $products;
-    }
     public function index()
     {
 
-        return Product::whereRaw('parent_id = 0')->filterBy(request()->all())->take(10)->get();
+        return Product::where('parent_id', 0)->filterBy(request()->all())->with('children')->take(10)->get();
     }
 
     public function show($id)
