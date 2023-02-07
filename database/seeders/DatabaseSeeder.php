@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
+use App\Models\Color;
 use App\Models\Category;
+use App\Models\CategoryColor;
 use App\Models\Gallery;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
@@ -54,9 +55,9 @@ class DatabaseSeeder extends Seeder
                 'colore' => $v->colore
             ]);
 
-            // $colore = Colore::create([
-            //     'name' => $v->colore
-            // ]);
+            $color = Color::updateOrCreate([
+                'name' => $v->colore
+            ]);
 
             $categories = $v->categories;
             foreach ($categories as $category) {
@@ -90,7 +91,10 @@ class DatabaseSeeder extends Seeder
 
 
                         $product->categories()->attach($category);
-                        // $category->colors()->attach($colore);
+                        CategoryColor::updateOrCreate([
+                            'color_id' => $color->id,
+                            'category_id' => $category->id
+                        ]);
                     }
                 }
             }

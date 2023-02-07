@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('link');
             $table->string('image_link');
-            $table->string('product_type');
+            $table->text('product_type');
             $table->integer('eta')->nullable();
             $table->string('marche');
             $table->string('genere');

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Colore;
+use App\Models\Color;
 use App\Models\Product;
 use App\Utilities\FilterBuilder;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +22,7 @@ class Category extends Model
 
     public function colors()
     {
-        return $this->belongsToMany(Colore::class, 'category_colors', 'category_id', 'colore_id')->withTimestamps();
+        return $this->belongsToMany(Color::class, 'category_colors', 'category_id', 'color_id')->withTimestamps();
     }
 
 

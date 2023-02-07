@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
@@ -28,7 +27,16 @@ class ProductController extends Controller
             ->with('images')
             ->paginate(12);
 
-        return $products;
+        $category = Category::where('name', $name)
+            ->with('colors')
+            ->get();
+
+        $response = [
+            'products' => $products,
+            'category' => $category
+        ];
+
+        return response(compact('products', 'category'));
     }
 
 

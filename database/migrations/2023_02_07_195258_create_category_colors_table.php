@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('colores', function (Blueprint $table) {
+        Schema::create('category_colors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('color_id')->references('id')->on('colors');
+            $table->foreignId('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('colores');
+        Schema::dropIfExists('category_colors');
     }
 };
