@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Colore;
 use App\Models\Product;
 use App\Utilities\FilterBuilder;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,12 @@ class Category extends Model
     {
         return $this->belongsToMany(Product::class, 'product_category',  'product_id', 'category_id')->withTimestamps();
     }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Colore::class, 'category_colors', 'category_id', 'colore_id')->withTimestamps();
+    }
+
 
 
     public function scopeFilterBy($query, $filters)

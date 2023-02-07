@@ -54,6 +54,10 @@ class DatabaseSeeder extends Seeder
                 'colore' => $v->colore
             ]);
 
+            // $colore = Colore::create([
+            //     'name' => $v->colore
+            // ]);
+
             $categories = $v->categories;
             foreach ($categories as $category) {
                 foreach ($category as $k1 => $v1) {
@@ -86,6 +90,7 @@ class DatabaseSeeder extends Seeder
 
 
                         $product->categories()->attach($category);
+                        // $category->colors()->attach($colore);
                     }
                 }
             }
