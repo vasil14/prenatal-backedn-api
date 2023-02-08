@@ -1,26 +1,20 @@
 <?php
 
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 
+
 // Product routes
-Route::group(['prefix' => 'v1'], function () {
-    Route::apiResource('products', ProductController::class);
+Route::prefix('v1/products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{id}', [ProductController::class, 'show']);
+    Route::get('/categoria-prodotto/{name}', [ProductController::class, 'productCategory']);
 });
 
-
-Route::get('/v1/products/categoria-prodotto/{name}', [ProductController::class, 'category']);
-Route::get('/v1/products/filter', [ProductController::class, 'filter']);
-
-
 // Category routes
-Route::get('/v1/category', [CategoryController::class, 'index']);
-Route::get('/v1/categories/{name}', [CategoryController::class, 'getCategories']);
-Route::get('/v1/category/{name}', [CategoryController::class, 'show']);
+Route::get('/v1/category/{name}', [CategoryController::class, 'subCategories']);
 
 
 // User routes

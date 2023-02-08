@@ -54,10 +54,11 @@ class DatabaseSeeder extends Seeder
                 'personaggi' => $v->personaggi,
                 'colore' => $v->colore
             ]);
-
-            $color = Color::updateOrCreate([
-                'name' => $v->colore
-            ]);
+            if (strlen($v->colore)) {
+                $color = Color::updateOrCreate([
+                    'name' => $v->colore
+                ]);
+            }
 
             $categories = $v->categories;
             foreach ($categories as $category) {
@@ -91,10 +92,12 @@ class DatabaseSeeder extends Seeder
 
 
                         $product->categories()->attach($category);
-                        CategoryColor::updateOrCreate([
-                            'color_id' => $color->id,
-                            'category_id' => $category->id
-                        ]);
+                        if ($color) {
+                            CategoryColor::updateOrCreate([
+                                'color_id' => $color->id,
+                                'category_id' => $category->id
+                            ]);
+                        }
                     }
                 }
             }
@@ -104,7 +107,7 @@ class DatabaseSeeder extends Seeder
 
             foreach ($gallery as $images) {
                 foreach ($images as $k => $v) {
-                    $image = Gallery::create([
+                    Gallery::create([
                         'link' => $v,
                         'product_id' => $product->id
                     ]);
