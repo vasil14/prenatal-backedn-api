@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use App\Models\Color;
 use App\Models\Category;
 use App\Models\CategoryColor;
@@ -28,11 +28,6 @@ class DatabaseSeeder extends Seeder
 
         foreach ($products as $k => $v) {
 
-            $p_id = 0;
-            if ((int)$v->id != (int)$v->parent_id) {
-                $p_id = $v->parent_id;
-            }
-
             $product = Product::create([
                 'id' => $v->id,
                 'mpn' => (int)$v->mpn,
@@ -42,7 +37,7 @@ class DatabaseSeeder extends Seeder
                 'stock' => (int)$v->stock,
                 'availability' => $v->availability,
                 'taglia' => $v->taglia,
-                'parent_id' => $p_id,
+                'parent_id' => ((int)$v->id != (int)$v->parent_id) ? $v->parent_id : '0',
                 'title' => $v->title,
                 'description' => $v->description,
                 'link' => $v->link,
@@ -102,7 +97,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
 
-
             $gallery = $v->gallery;
 
             foreach ($gallery as $images) {
@@ -114,13 +108,5 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
-
-
-
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
