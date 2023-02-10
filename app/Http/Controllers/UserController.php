@@ -54,7 +54,7 @@ class UserController extends Controller
         $user = User::where('email', $formFields['email'])->first();
 
         if (!$user || !Hash::check($formFields['password'], $user->password)) {
-            return response(['message' => 'Wrong Creds'], 401);
+            return response(['message' => 'Wrong Credentials!'], 401);
         }
 
         $token = $user->createToken('PersonalAccessToken')->plainTextToken;
